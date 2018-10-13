@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>medical</name>
-    <description>Medical histroy project for Bluehack</description>
+    <description>Medical history project for Bluehack</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -25,6 +25,13 @@
     </properties>
 
     <dependencies>
+        <!-- Project specific -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.11.0</version>
+        </dependency>
+        <!-- End project specific -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
