@@ -8,6 +8,15 @@ public class TimelineBean {
     private String title;
     private String fullText;
     private String treatment;
+    private double frequency;
+
+    public double getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(double frequency) {
+        this.frequency = frequency;
+    }
 
     public String getTest() {
         return test;

@@ -33,9 +33,23 @@ public class TimelineController {
         List<String> prob = timelineService.getPatientAllProblemMarkedNotes(pid);
         List<String> trea = timelineService.getPatientAllTreatmentMarkedNotes(pid);
 
+        ArrayList<Integer> totalFreq = new ArrayList<>(notes.size());
+        for (int i = 0; i < notes.size(); i++) {
+            String diseaseName = notes.get(i).getDiseaseCode();
+            String[] tmp = diseaseName.split(" ");
+            String diseaseFreqTerm = tmp[tmp.length - 1];
+            totalFreq.add(countOccurences(orig.get(i), diseaseFreqTerm));
+        }
+
+        int sumTotalFreq = 0;
+        for (int i : totalFreq) {
+            sumTotalFreq += i;
+        }
+
         List<TimelineBean> tb = new ArrayList<>(notes.size());
         for (int i = 0; i < notes.size(); i++) {
             TimelineBean timelineBean = new TimelineBean();
+            timelineBean.setFrequency(1.0 * totalFreq.get(i) / sumTotalFreq);
             timelineBean.setFullText(orig.get(i));
             timelineBean.setProblem(prob.get(i));
             timelineBean.setTest(test.get(i));
@@ -46,6 +60,18 @@ public class TimelineController {
             tb.add(timelineBean);
         }
         return tb;
+    }
+
+    private int countOccurences(String str, String word) {
+        word = word.toLowerCase();
+        String a[] = str.toLowerCase().split(" ");
+
+        int count = 0;
+        for (String anA : a) {
+            if (word.equals(anA)) count++;
+        }
+
+        return count;
     }
 
 }
