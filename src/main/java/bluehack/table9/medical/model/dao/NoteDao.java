@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 
 @Component
 public class NoteDao {
@@ -25,8 +26,12 @@ public class NoteDao {
     }
 
     public NoteEntity findNoteById(String id) {
-        Query query = new Query(Criteria.where("id").is(id));
-        return mongoTemplate.findOne(query, NoteEntity.class);
+        return mongoTemplate.findById(id, NoteEntity.class);
+    }
+
+    public List<NoteEntity> findNotesByPatientId(String pid) {
+        Query query = new Query(Criteria.where("patientId").is(pid));
+        return mongoTemplate.find(query, NoteEntity.class);
     }
 
 }

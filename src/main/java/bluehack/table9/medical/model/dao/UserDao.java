@@ -14,19 +14,19 @@ public class UserDao {
     private MongoTemplate mongoTemplate;
 
     public void addUser(UserEntity u) {
-        mongoTemplate.save(u);
+        this.mongoTemplate.save(u);
     }
 
     public void removeUserByUsername(String username) {
         Query query = new Query(Criteria.where("username").is(username));
-        UserEntity u = mongoTemplate.findOne(query, UserEntity.class);
+        UserEntity u = this.mongoTemplate.findOne(query, UserEntity.class);
         if (u != null)
-            mongoTemplate.remove(u);
+            this.mongoTemplate.remove(u);
     }
 
     public boolean userLoginCheck(String username, String passHash) {
         Query query = new Query(Criteria.where("username").is(username));
-        UserEntity u = mongoTemplate.findOne(query, UserEntity.class);
+        UserEntity u = this.mongoTemplate.findOne(query, UserEntity.class);
         if (u == null) return false;
         return u.getPasswordHash().equals(passHash);
     }

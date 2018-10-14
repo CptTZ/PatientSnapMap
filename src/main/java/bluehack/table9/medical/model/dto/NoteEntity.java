@@ -1,6 +1,7 @@
 package bluehack.table9.medical.model.dto;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -17,9 +18,20 @@ public class NoteEntity implements Serializable {
 
     private String note;
 
+    @Indexed
     private String patientId;
 
+    private String diseaseCode;
+
     private Instant timestamp = Instant.now();
+
+    public String getDiseaseCode() {
+        return diseaseCode;
+    }
+
+    public void setDiseaseCode(String diseaseCode) {
+        this.diseaseCode = diseaseCode;
+    }
 
     public Instant getTimestamp() {
         return timestamp;
