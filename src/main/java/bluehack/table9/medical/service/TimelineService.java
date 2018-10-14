@@ -28,6 +28,10 @@ public class TimelineService {
         return this.patientDao.findPatientByPid(pid).getName();
     }
 
+    public List<NoteEntity> getPatientAllOriginalNote(String pid) {
+        return noteDao.findNotesByPatientIdDesc(pid);
+    }
+
     public List<String> getPatientAllOriginalNotes(String pid) {
         populateCurrentNotes(pid);
         ArrayList<String> notesList = new ArrayList<>(this.cacheCurrentPatientNote.size());
