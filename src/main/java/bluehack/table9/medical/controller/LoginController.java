@@ -23,6 +23,12 @@ public class LoginController {
         return modelAndView;
     }
 
+    @GetMapping("/signup")
+    public ModelAndView signup(ModelAndView modelAndView) {
+        modelAndView.setViewName("signup");
+        return modelAndView;
+    }
+
     @PostMapping(value = "api/login")
     @ResponseBody
     public RestfulResponse loginHandler(@RequestBody(required = true) LoginBean lb) {

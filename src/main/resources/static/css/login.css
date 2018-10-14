@@ -1,0 +1,11 @@
+@import url('./common_auth.css');
+
+.sign-up {
+    color: rgb(104, 145, 162);
+}
+
+.sign-up:hover,
+.sign-up:active,
+.sign-up:focus {
+    color: rgb(12, 97, 33);
+}
