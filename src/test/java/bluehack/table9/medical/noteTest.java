@@ -27,18 +27,21 @@ public class noteTest {
     @Autowired
     private NoteDao noteDao;
 
-    private String pid = "IBM-2018-001";
-
     @Test
-    public void parseNoteTest() throws Exception {
+    public void parseNote1Test() throws Exception {
         for (int i = 1; i <= 8; i++) {
-            parseNode(i);
+            parseNote(String.format("seizure%d", i), "IBM-2018-001");
         }
     }
 
-    private void parseNode(int i) throws Exception {
-        String f1 = String.format("text/seizure%d.con", i);
-        String f2 = String.format("text/seizure%d.txt", i);
+    @Test
+    public void parseNote2Test() throws Exception {
+        parseNote("testnote", "IBM-2018-002");
+    }
+
+    private void parseNote(String filename, String pid) throws Exception {
+        String f1 = String.format("text/%s.con", filename);
+        String f2 = String.format("text/%s.txt", filename);
 
         List<String> conData = Files.readAllLines(Paths.get(f1));
         List<String> originalData = Files.readAllLines(Paths.get(f2));
