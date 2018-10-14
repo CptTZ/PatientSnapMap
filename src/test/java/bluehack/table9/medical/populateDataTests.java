@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Random;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class populateDataTests {
@@ -43,21 +45,15 @@ public class populateDataTests {
      */
     @Test
     public void addPatientTest() {
-        PatientEntity p;
-
-        p = new PatientEntity();
-        p.setAge(18);
-        p.setGender((byte) 0);
-        p.setName("Blue Hack Jr");
-        p.setPatientId("PUH-2017-935");
-        this.patientDao.addPatient(p);
-
-        p = new PatientEntity();
-        p.setAge(25);
-        p.setGender((byte) 1);
-        p.setName("Blue Hack");
-        p.setPatientId("PUH-2007-935");
-        this.patientDao.addPatient(p);
+        Random r = new Random();
+        for (int i = 1; i <= 8; i++) {
+            PatientEntity p = new PatientEntity();
+            p.setAge(r.nextInt(80));
+            p.setGender((byte) (r.nextInt(10) % 2 == 0 ? 1 : 0));
+            p.setName(String.format("Blue Hack - %d", i));
+            p.setPatientId(String.format("IBM-2018-%03d", i));
+            this.patientDao.addPatient(p);
+        }
     }
 
 }

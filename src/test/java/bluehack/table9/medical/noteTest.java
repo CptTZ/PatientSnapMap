@@ -8,10 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,12 +36,18 @@ public class noteTest {
     private void parseNode(int i) throws Exception {
         String f1 = String.format("text/seizure%d.con", i);
         String f2 = String.format("text/seizure%d.txt", i);
+        String pid = String.format("IBM-2018-%03d", i);
 
         List<String> conData = Files.readAllLines(Paths.get(f1));
         List<String> originalData = Files.readAllLines(Paths.get(f2));
 
+        String[] info = extractInfo(f2);
+
         NoteEntity n = extractNlpResult(originalData, conData);
         n.setNote(String.join("\r\n", originalData));
+        n.setNodeDate(info[0]);
+        n.setDiseaseCode(info[1]);
+        n.setPatientId(pid);
 
         this.noteDao.saveNote(n);
     }
@@ -86,6 +98,35 @@ public class noteTest {
 
         System.err.println(String.format("%d\t%d\t%s%n", left + 1, right + 1, origLine.substring(left, right)));
         return new int[]{left, right};
+    }
+
+    private String[] extractInfo(String filename) throws IOException {
+        File file = new File(filename);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String str;
+
+        Pattern datePt = Pattern.compile("[0-9]?[0-9]?\\/[0-9]?[0-9]?\\/2...");
+        Pattern diagPt = Pattern.compile(".*(ICD10-CM .*, Working, Diagnosis).");
+
+        String date = "Unknown", diag = "Unknown";
+
+        while ((str = br.readLine()) != null) {
+            //get the date for the note
+            Matcher dateMt = datePt.matcher(str);
+            if (dateMt.find()) {
+                date = dateMt.group(0).trim();
+            }
+            // get the diagnosis for the note
+            Matcher diagMt = diagPt.matcher(str);
+
+            if (diagMt.find()) {
+                String diagTerm = diagMt.group(0).replace(", Working, Diagnosis\\).", "").split(" \\(")[0];
+                diag = diagTerm.replace("Diagnosis:", "").trim();
+            }
+        }
+        br.close();
+
+        return new String[]{date, diag};
     }
 
 }
