@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,6 +27,8 @@ public class noteTest {
     @Autowired
     private NoteDao noteDao;
 
+    private String pid = "IBM-2018-001";
+
     @Test
     public void parseNoteTest() throws Exception {
         for (int i = 1; i <= 8; i++) {
@@ -36,7 +39,6 @@ public class noteTest {
     private void parseNode(int i) throws Exception {
         String f1 = String.format("text/seizure%d.con", i);
         String f2 = String.format("text/seizure%d.txt", i);
-        String pid = String.format("IBM-2018-%03d", i);
 
         List<String> conData = Files.readAllLines(Paths.get(f1));
         List<String> originalData = Files.readAllLines(Paths.get(f2));
@@ -45,8 +47,9 @@ public class noteTest {
 
         NoteEntity n = extractNlpResult(originalData, conData);
         n.setNote(String.join("\r\n", originalData));
-        n.setNodeDate(info[0]);
+        n.setNoteDate(new SimpleDateFormat("MM/dd/yyyy").parse(info[0].trim()));
         n.setDiseaseCode(info[1]);
+        System.err.println(String.format("Date: %s\tDisease: %s%n", info[0], info[1]));
         n.setPatientId(pid);
 
         this.noteDao.saveNote(n);
@@ -67,7 +70,6 @@ public class noteTest {
                     endPos = Integer.parseInt(d[3]);
             String tipText = d[4].trim();
 
-            System.err.print(whichLine + 1 + ": ");
             int[] sePos = calcStartEndPosition(originalData.get(whichLine), startPos, endPos, tipText.toLowerCase());
 
             String[] tmp = new String[]{String.valueOf(whichLine), String.valueOf(sePos[0]), String.valueOf(sePos[1]), tipText};
@@ -96,7 +98,7 @@ public class noteTest {
         int left = origLine.toLowerCase().indexOf(tip);
         int right = left + tip.length();
 
-        System.err.println(String.format("%d\t%d\t%s%n", left + 1, right + 1, origLine.substring(left, right)));
+        origLine.substring(left, right);
         return new int[]{left, right};
     }
 

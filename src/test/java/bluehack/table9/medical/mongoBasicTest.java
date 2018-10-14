@@ -82,13 +82,13 @@ public class mongoBasicTest {
         assertEquals(load.getPatientId(), this.pid);
         assertEquals(load.getNote(), noteData);
 
-        assertEquals(5, this.noteDao.findNotesByPatientId(this.pid).size());
+        assertEquals(5, this.noteDao.findNotesByPatientIdDesc(this.pid).size());
 
         for (String uuid : uuids) {
             this.noteDao.removeNoteById(uuid);
             assertNull(this.noteDao.findNoteById(uuid));
         }
-        assertEquals(0, this.noteDao.findNotesByPatientId(this.pid).size());
+        assertEquals(0, this.noteDao.findNotesByPatientIdDesc(this.pid).size());
     }
 
     private String saveOneNoteForFakePid(String data) {

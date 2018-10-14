@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A note for doctors
@@ -24,7 +25,7 @@ public class NoteEntity implements Serializable {
 
     private String diseaseCode;
 
-    private String nodeDate;
+    private Date noteDate;
 
     private ArrayList<String[]> problem;
 
@@ -32,12 +33,12 @@ public class NoteEntity implements Serializable {
 
     private ArrayList<String[]> test;
 
-    public String getNodeDate() {
-        return nodeDate;
+    public Date getNoteDate() {
+        return noteDate;
     }
 
-    public void setNodeDate(String nodeDate) {
-        this.nodeDate = nodeDate;
+    public void setNoteDate(Date noteDate) {
+        this.noteDate = noteDate;
     }
 
     public ArrayList<String[]> getProblem() {

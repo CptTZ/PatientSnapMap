@@ -2,6 +2,7 @@ package bluehack.table9.medical.model.dao;
 
 import bluehack.table9.medical.model.dto.NoteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,8 +30,9 @@ public class NoteDao {
         return mongoTemplate.findById(id, NoteEntity.class);
     }
 
-    public List<NoteEntity> findNotesByPatientId(String pid) {
+    public List<NoteEntity> findNotesByPatientIdDesc(String pid) {
         Query query = new Query(Criteria.where("patientId").is(pid));
+        query.with(new Sort(Sort.Direction.DESC, "noteDate"));
         return mongoTemplate.find(query, NoteEntity.class);
     }
 
