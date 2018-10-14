@@ -61,7 +61,7 @@ $("#login").submit(function (e) {
                 console.log("Success");
                 window.location = 'about:blank';
             } else {
-                showErrMsg(data.msg + ' Please contact support.');
+                showErrMsg(data.msg + '! Please contact support.');
             }
         },
 
