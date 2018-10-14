@@ -40,7 +40,6 @@ public class NoteService {
         } catch (Exception e) {
             logger.error("Run NLP failed", e);
         }
-
     }
 
     private void writeOutFile(String data, String filepath) throws Exception {
