@@ -37,7 +37,7 @@ public class TimelineService {
         ArrayList<String> notesList = new ArrayList<>(this.cacheCurrentPatientNote.size());
 
         for (NoteEntity n : this.cacheCurrentPatientNote) {
-            notesList.add(n.getNote().replace("\r\n", "</br>"));
+            notesList.add(n.getNote().replace("\r\n", "</br>").replace("\t", "&emsp;"));
         }
 
         return notesList;
@@ -137,7 +137,7 @@ public class TimelineService {
             sb.append("</br>");
         }
 
-        return sb.toString();
+        return sb.toString().replace("\t", "&emsp;");
     }
 
     private String addTextSpan(String segment, String type) {

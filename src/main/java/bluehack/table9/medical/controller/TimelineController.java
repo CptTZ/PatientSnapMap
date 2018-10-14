@@ -25,6 +25,8 @@ public class TimelineController {
     @GetMapping(value = "api/timeline/{pid}")
     @ResponseBody
     public List<TimelineBean> getDataHandler(@PathVariable String pid) {
+        pid = pid.toUpperCase();
+
         List<NoteEntity> notes = timelineService.getPatientAllOriginalNote(pid);
         List<String> orig = timelineService.getPatientAllOriginalNotes(pid);
         List<String> test = timelineService.getPatientAllTestMarkedNotes(pid);
